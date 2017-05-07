@@ -1082,7 +1082,7 @@ public class TaskManagerTabPanel extends JPanel {
             }
             if (count == this.taskList.size()) {
                 TaskManagerTabPanel.this.summary.readData(resultsPath);
-                      // TaskManagerTabPanel.this.plot.readData(resultsPath);
+                // TaskManagerTabPanel.this.plot.readData(resultsPath);
                 //  TaskManagerTabPanel.this.analizeTab.readData(resultsPath);
                 System.out.println();
                 System.out.println("Type one option to perform summaries: <summary> <plot> <Analyze> or <exit> to finish");
@@ -1096,24 +1096,26 @@ public class TaskManagerTabPanel extends JPanel {
                                 System.out.println("[" + i + "] " + TaskManagerTabPanel.this.summary.measures.get(0).split(",")[i]);
                             }
                             System.out.println("Select Measeures: type -h for help");
-                                   while(true){
-                                       String arg[] = sc.nextLine().split(" ");
-                                       boolean out = expCLI.summary1CMD(arg);
-                                      if(expCLI.measures != null){ 
-                                       String []measures = new String[expCLI.measures.length];
-                                       if(measures.length == expCLI.types.length){
-                                       for(int i = 0; i < measures.length; i++){
-                                           measures[i] = TaskManagerTabPanel.this.summary.measures.get(0).split(",")[expCLI.measures[i]];
-                                       }
-                                       TaskManagerTabPanel.this.summary.summaryCMD(measures, expCLI.types);
-                                       if(out == true)
-                                           break;
-                                       }else{
-                                           System.out.println("There must be the same number of measures and types, please enter the commands again");
-                                       }
-                                      }
-                                       
-                                   }
+                            while (true) {
+                                String arg[] = sc.nextLine().split(" ");
+                                boolean out = expCLI.summary1CMD(arg);
+                                if (out == true) {
+                                    if (expCLI.measures != null) {
+                                        String[] measures = new String[expCLI.measures.length];
+                                        if (measures.length == expCLI.types.length) {
+                                            for (int i = 0; i < measures.length; i++) {
+                                                measures[i] = TaskManagerTabPanel.this.summary.measures.get(0).split(",")[expCLI.measures[i]];
+                                            }
+                                            TaskManagerTabPanel.this.summary.summaryCMD(measures, expCLI.types);
+
+                                            break;
+                                        } else {
+                                            System.out.println("There must be the same number of measures and types, please enter the commands again");
+                                        }
+                                    }
+                                }
+
+                            }
                             break;
                     }
                     System.out.println("Type one option to perform summaries: <summary> <plot> <Analyze> or <exit> to finish");
