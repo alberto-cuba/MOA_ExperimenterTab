@@ -86,10 +86,10 @@ public class ExperimeterCLI {
                     types = new String[1];
                     types[0] = type;
                 }
-            }else{
+            } else {
                 types = new String[measures.length];
-                for(int i = 0; i < types.length; i++){
-                   types[i] = "Mean"; 
+                for (int i = 0; i < types.length; i++) {
+                    types[i] = "Mean";
                 }
             }
         } catch (org.apache.commons.cli.ParseException ex) {
