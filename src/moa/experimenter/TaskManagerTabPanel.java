@@ -949,185 +949,185 @@ public class TaskManagerTabPanel extends JPanel {
 
     public void runTaskCLI(String[] args) {
         ExperimeterCLI expCLI = new ExperimeterCLI(args);
-        expCLI.proccesCMD();
+        boolean Ok = expCLI.proccesCMD();
+        if (Ok == true) {
+            MainTask tasks[] = new MainTask[expCLI.getAlgorithms().length * expCLI.getStreams().length];
+            int taskCount = 0;
 
-        MainTask tasks[] = new MainTask[expCLI.getAlgorithms().length * expCLI.getStreams().length];
-        int taskCount = 0;
+            String dir = "";
 
-        String dir = "";
-
-        try {
-            this.currentTask = (MainTask) ClassOption.cliStringToObject(
-                    expCLI.getTask(), MainTask.class, null);
-        } catch (Exception ex) {
-            Logger.getLogger(TaskManagerTabPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        MainTask auxTask = (MainTask) this.currentTask.copy();
-
-        resultsPath = expCLI.getResultsFolder() + File.separator + "Results";
-        dir += resultsPath;
-
-        File f = new File(dir);
-        if (f.exists()) {
-            Object[] options = {"Yes", "No"};
-            String cancel = "NO";
-            int resp = JOptionPane.showOptionDialog(this,
-                    "The selected folder is not empty. This action may overwrite "
-                    + "previous experiment results. Do you want to continue?", "Warning",
-                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, cancel);
-            if (resp == JOptionPane.OK_OPTION) {
-                ReadFile.deleteDrectory(f);
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Please specify another directory", "Message",
-                        JOptionPane.INFORMATION_MESSAGE);
-                return;
+            try {
+                this.currentTask = (MainTask) ClassOption.cliStringToObject(
+                        expCLI.getTask(), MainTask.class, null);
+            } catch (Exception ex) {
+                Logger.getLogger(TaskManagerTabPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        f.mkdir();
+            MainTask auxTask = (MainTask) this.currentTask.copy();
 
-        String algNames = "";
-        String streamNames = "";
-        for (int i = 0; i < expCLI.getAlgorithms().length; i++) {
-            String alg = expCLI.getAlgorithms()[i];
-            String algFile = expCLI.getAlgorithmsID()[i];
-            algNames += algFile;
-            if (i != expCLI.getAlgorithms().length - 1) {
-                algNames += ",";
-            }
-            for (int j = 0; j < expCLI.getStreams().length; j++) {
-                String stream = expCLI.getStreams()[j];
-                String streamFile = expCLI.getStreamsID()[j];
-                streamNames += streamFile.split(" ")[0];
-                if (j != expCLI.getStreams().length - 1) {
-                    streamNames += ",";
-                }
-                if (i == 0) {
-                    String sfile = FilenameUtils.separatorsToSystem(dir + "\\\\" + streamFile);
-                    f = new File(sfile);
-                    f.mkdir();
-                }
-                String task = " -l ";
-                if (alg.split(" ") != null) {
-                    task += "(" + alg + ") -s (" + stream + ")" + " -d (" + dir + File.separator
-                            + streamFile.split(" ")[0] + File.separator + algFile + ".txt" + ")";
+            resultsPath = expCLI.getResultsFolder() + File.separator + "Results";
+            dir += resultsPath;
+
+            File f = new File(dir);
+            if (f.exists()) {
+                Object[] options = {"Yes", "No"};
+                String cancel = "NO";
+                int resp = JOptionPane.showOptionDialog(this,
+                        "The selected folder is not empty. This action may overwrite "
+                        + "previous experiment results. Do you want to continue?", "Warning",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, cancel);
+                if (resp == JOptionPane.OK_OPTION) {
+                    ReadFile.deleteDrectory(f);
+
                 } else {
-                    task += alg + " -s (" + stream + ")" + " -d (" + dir + File.separator
-                            + streamFile.split(" ")[0] + File.separator + algFile + ".txt" + ")";
+                    JOptionPane.showMessageDialog(this, "Please specify another directory", "Message",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    return;
                 }
+            }
+            f.mkdir();
+
+            String algNames = "";
+            String streamNames = "";
+            for (int i = 0; i < expCLI.getAlgorithms().length; i++) {
+                String alg = expCLI.getAlgorithms()[i];
+                String algFile = expCLI.getAlgorithmsID()[i];
+                algNames += algFile;
+                if (i != expCLI.getAlgorithms().length - 1) {
+                    algNames += ",";
+                }
+                for (int j = 0; j < expCLI.getStreams().length; j++) {
+                    String stream = expCLI.getStreams()[j];
+                    String streamFile = expCLI.getStreamsID()[j];
+                    streamNames += streamFile.split(" ")[0];
+                    if (j != expCLI.getStreams().length - 1) {
+                        streamNames += ",";
+                    }
+                    if (i == 0) {
+                        String sfile = FilenameUtils.separatorsToSystem(dir + "\\\\" + streamFile);
+                        f = new File(sfile);
+                        f.mkdir();
+                    }
+                    String task = " -l ";
+                    if (alg.split(" ") != null) {
+                        task += "(" + alg + ") -s (" + stream + ")" + " -d (" + dir + File.separator
+                                + streamFile.split(" ")[0] + File.separator + algFile + ".txt" + ")";
+                    } else {
+                        task += alg + " -s (" + stream + ")" + " -d (" + dir + File.separator
+                                + streamFile.split(" ")[0] + File.separator + algFile + ".txt" + ")";
+                    }
 //                String task = FilenameUtils.separatorsToSystem(" -l (" + alg + ") -s (" + stream + ") " + " -d " + "(" + dir + "\\\\"
 //                        + streamFile.split(" ")[0] + "\\\\" + algFile + ".txt" + ")");
-                auxTask.getOptions().setViaCLIString(task);
+                    auxTask.getOptions().setViaCLIString(task);
 
+                    try {
+                        tasks[taskCount] = (MainTask) auxTask.copy();
+                    } catch (Exception ex) {
+                        Logger.getLogger(TaskManagerTabPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    taskCount++;
+                }
+            }
+
+            Buffer buffer = new Buffer(tasks);
+            int proc = expCLI.getThreads();
+
+            if (proc > tasks.length) {
+                proc = tasks.length;
+            }
+            for (int i = 0; i < proc; i++) {
+                TaskThread thread = new TaskThread(buffer);
+                thread.start();
+                this.taskList.add(0, thread);
+                this.taskTableModel.fireTableDataChanged();
+                this.taskTable.setRowSelectionInterval(0, 0);
+
+            }
+
+            System.err.println(Globals.getWorkbenchInfoString());
+            while (true) {
+                int count = 0;
+                int progressAnimIndex = 0;
+                StringBuilder progressLine = new StringBuilder();
+                progressLine.append('\r');
+
+                for (TaskThread thread : this.taskList) {
+                    //System.out.println(thread.getCurrentActivityFracComplete()*100);
+
+                    if (thread.isCompleted == true) {
+                        count++;
+                        //System.out.println(count);
+                    }
+                    progressLine.append(StringUtils.secondsToDHMSString(thread.getCPUSecondsElapsed()));
+                    progressLine.append(" [");
+                    progressLine.append(thread.getCurrentStatusString());
+                    progressLine.append("] ");
+                    double fracComplete = thread.getCurrentActivityFracComplete();
+                    if (fracComplete >= 0.0) {
+                        progressLine.append(StringUtils.doubleToString(
+                                fracComplete * 100.0, 2, 2));
+                        progressLine.append("% ");
+
+                    }
+                    //progressLine.append(thread.getCurrentActivityString());
+
+                }
+                System.out.print(progressLine);
+                System.out.print('\r');
+                System.out.flush();
                 try {
-                    tasks[taskCount] = (MainTask) auxTask.copy();
-                } catch (Exception ex) {
-                    Logger.getLogger(TaskManagerTabPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    Thread.sleep(1000);
+
+                } catch (InterruptedException ignored) {
+                    // wake up
                 }
-
-                taskCount++;
-            }
-        }
-
-        Buffer buffer = new Buffer(tasks);
-        int proc = expCLI.getThreads();
-
-        if (proc > tasks.length) {
-            proc = tasks.length;
-        }
-        for (int i = 0; i < proc; i++) {
-            TaskThread thread = new TaskThread(buffer);
-            thread.start();
-            this.taskList.add(0, thread);
-            this.taskTableModel.fireTableDataChanged();
-            this.taskTable.setRowSelectionInterval(0, 0);
-
-        }
-
-        System.err.println(Globals.getWorkbenchInfoString());
-        while (true) {
-            int count = 0;
-            int progressAnimIndex = 0;
-            StringBuilder progressLine = new StringBuilder();
-            progressLine.append('\r');
-
-            for (TaskThread thread : this.taskList) {
-                //System.out.println(thread.getCurrentActivityFracComplete()*100);
-
-                if (thread.isCompleted == true) {
-                    count++;
-                    //System.out.println(count);
-                }
-                progressLine.append(StringUtils.secondsToDHMSString(thread.getCPUSecondsElapsed()));
-                progressLine.append(" [");
-                progressLine.append(thread.getCurrentStatusString());
-                progressLine.append("] ");
-                double fracComplete = thread.getCurrentActivityFracComplete();
-                if (fracComplete >= 0.0) {
-                    progressLine.append(StringUtils.doubleToString(
-                            fracComplete * 100.0, 2, 2));
-                    progressLine.append("% ");
-
-                }
-                //progressLine.append(thread.getCurrentActivityString());
-
-            }
-            System.out.print(progressLine);
-            System.out.print('\r');
-            System.out.flush();
-            try {
-                Thread.sleep(1000);
-
-            } catch (InterruptedException ignored) {
-                // wake up
-            }
-            if (count == this.taskList.size()) {
-                TaskManagerTabPanel.this.summary.readData(resultsPath);
+                if (count == this.taskList.size()) {
+                    TaskManagerTabPanel.this.summary.readData(resultsPath);
                 // TaskManagerTabPanel.this.plot.readData(resultsPath);
-                //  TaskManagerTabPanel.this.analizeTab.readData(resultsPath);
-                System.out.println();
-                System.out.println("To perform summaries type summary or exit to finish");
-                Scanner sc = new Scanner(System.in);
-                String option = sc.nextLine();
-                while (!option.equals("exit")) {
-                    switch (option) {
-                        case "summary":
-                            System.out.println("Measures:");
-                            for (int i = 0; i < TaskManagerTabPanel.this.summary.measures.get(0).split(",").length; i++) {
-                                System.out.println("[" + i + "] " + TaskManagerTabPanel.this.summary.measures.get(0).split(",")[i]);
-                            }
-                            System.out.println("Select Measeures: type -h for help");
-                            while (true) {
-                                String arg[] = sc.nextLine().split(" ");
-                                boolean out = expCLI.summary1CMD(arg);
-                                if (out == true) {
-                                    if (expCLI.measures != null) {
-                                        String[] measures = new String[expCLI.measures.length];
-                                        if (measures.length == expCLI.types.length) {
-                                            for (int i = 0; i < measures.length; i++) {
-                                                measures[i] = TaskManagerTabPanel.this.summary.measures.get(0).split(",")[expCLI.measures[i]];
-                                            }
-                                            TaskManagerTabPanel.this.summary.summaryCMD(measures, expCLI.types);
+                    //  TaskManagerTabPanel.this.analizeTab.readData(resultsPath);
+                    System.out.println();
+                    System.out.println("To perform summaries type summary or exit to finish");
+                    Scanner sc = new Scanner(System.in);
+                    String option = sc.nextLine();
+                    while (!option.equals("exit")) {
+                        switch (option) {
+                            case "summary":
+                                System.out.println("Measures:");
+                                for (int i = 0; i < TaskManagerTabPanel.this.summary.measures.get(0).split(",").length; i++) {
+                                    System.out.println("[" + i + "] " + TaskManagerTabPanel.this.summary.measures.get(0).split(",")[i]);
+                                }
+                                System.out.println("Select Measeures: type -h for help");
+                                while (true) {
+                                    String arg[] = sc.nextLine().split(" ");
+                                    boolean out = expCLI.summary1CMD(arg);
+                                    if (out == true) {
+                                        if (expCLI.measures != null) {
+                                            String[] measures = new String[expCLI.measures.length];
+                                            if (measures.length == expCLI.types.length) {
+                                                for (int i = 0; i < measures.length; i++) {
+                                                    measures[i] = TaskManagerTabPanel.this.summary.measures.get(0).split(",")[expCLI.measures[i]];
+                                                }
+                                                TaskManagerTabPanel.this.summary.summaryCMD(measures, expCLI.types);
 
-                                            break;
-                                        } else {
-                                            System.out.println("There must be the same number of measures and types, please enter the commands again");
+                                                break;
+                                            } else {
+                                                System.out.println("There must be the same number of measures and types, please enter the commands again");
+                                            }
                                         }
                                     }
-                                }
 
-                            }
-                            break;
+                                }
+                                break;
+                        }
+                        System.out.println("Type one option to perform summaries: <summary> <plot> <Analyze> or <exit> to finish");
+                        option = sc.nextLine();
                     }
-                    System.out.println("Type one option to perform summaries: <summary> <plot> <Analyze> or <exit> to finish");
-                    option = sc.nextLine();
-                }
 //                       String arg = sc.nextLine();
 //                       System.out.println(arg);
-                break;
+                    break;
+                }
             }
         }
-
     }
 
     /**
