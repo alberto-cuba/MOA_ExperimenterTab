@@ -204,7 +204,7 @@ public class ExperimeterCLI {
             //Results folder
             resultsFolder = cmdLine.getOptionValue("rf");
 
-            if (streamNames == null) {
+            if (resultsFolder == null) {
                 throw new org.apache.commons.cli.ParseException("The resuts folder are required");
             }
             this.setResultsFolder(resultsFolder);
