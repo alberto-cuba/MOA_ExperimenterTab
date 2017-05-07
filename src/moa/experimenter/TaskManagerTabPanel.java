@@ -1086,7 +1086,7 @@ public class TaskManagerTabPanel extends JPanel {
                 // TaskManagerTabPanel.this.plot.readData(resultsPath);
                 //  TaskManagerTabPanel.this.analizeTab.readData(resultsPath);
                 System.out.println();
-                System.out.println("Type one option to perform summaries: <summary> <plot> <Analyze> or <exit> to finish");
+                System.out.println("To perform summaries type summary or exit to finish");
                 Scanner sc = new Scanner(System.in);
                 String option = sc.nextLine();
                 while (!option.equals("exit")) {
