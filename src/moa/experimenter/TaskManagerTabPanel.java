@@ -1073,7 +1073,7 @@ public class TaskManagerTabPanel extends JPanel {
 
             }
             System.out.print(progressLine);
-            System.out.print('\r');
+            System.out.flush();
             try {
                 Thread.sleep(1000);
 
