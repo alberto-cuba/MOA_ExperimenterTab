@@ -141,8 +141,13 @@ public class ExperimeterCLI {
             }
 
             try {
-
-                this.setAlgorithms(algNames.split(","));
+                if(algNames.contains(",")){
+                  this.setAlgorithms(algNames.split(","));
+                }else{
+                    String alg[] = new String[1];
+                    alg[0] = algNames;
+                    this.setAlgorithms(alg);
+                }
 
             } catch (Exception e) {
                 System.out.println("Problems with algortihms ls options");
@@ -151,16 +156,19 @@ public class ExperimeterCLI {
 
             //Agorithms ID 
             if (cmdLine.hasOption("lss")) {
-                try {
+                
                     algShortNames = cmdLine.getOptionValue("lss");
-                    this.setAlgorithmsID(algShortNames.split(","));
+                   if(algShortNames.contains(",")) 
+                     this.setAlgorithmsID(algShortNames.split(","));
+                   else{
+                       String ash[] = new String[1];
+                       ash[0] = algShortNames;
+                       this.setAlgorithmsID(ash);
+                   }
 
-                } catch (Exception e) {
-                    System.out.println("Problems with algortihms ID options");
-                    new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);
-                }
+                
             } else {
-                this.setAlgorithmsID(algNames.split(","));
+                this.setAlgorithmsID(this.getAlgorithms());
             }
             //Streams names
             streamNames = cmdLine.getOptionValue("ds");
@@ -168,26 +176,30 @@ public class ExperimeterCLI {
             if (streamNames == null) {
                 throw new org.apache.commons.cli.ParseException("The name of the streams are required");
             }
-            try {
-
+            
+               if(streamNames.contains(","))
                 this.setStreams(streamNames.split(","));
-
-            } catch (Exception e) {
-                System.out.println("Problems with streams ds options");
-                new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);
-            }
+               else{
+                   String str[] = new String[1];
+                   str[0] = streamNames;
+                   this.setStreams(str);
+                   
+               }
+            
             //stream ID 
             if (cmdLine.hasOption("dss")) {
-                try {
                     streamShortNames = cmdLine.getOptionValue("dss");
+                  if(streamShortNames.contains(",")) 
                     this.setStreamsID(streamShortNames.split(","));
+                  else{
+                      String strh[] = new String[1];
+                      strh[0] = streamShortNames;
+                      this.setStreamsID(strh);
+                  }
 
-                } catch (Exception e) {
-                    System.out.println("Problems with streams ID options");
-                    new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);
-                }
+               
             } else {
-                this.setStreamsID(streamNames.split(","));
+                this.setStreamsID(this.getStreams());
             }
             //Results folder
             resultsFolder = cmdLine.getOptionValue("rf");
