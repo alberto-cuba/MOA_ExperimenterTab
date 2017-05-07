@@ -969,20 +969,7 @@ public class TaskManagerTabPanel extends JPanel {
 
             File f = new File(dir);
             if (f.exists()) {
-                Object[] options = {"Yes", "No"};
-                String cancel = "NO";
-                int resp = JOptionPane.showOptionDialog(this,
-                        "The selected folder is not empty. This action may overwrite "
-                        + "previous experiment results. Do you want to continue?", "Warning",
-                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, cancel);
-                if (resp == JOptionPane.OK_OPTION) {
-                    ReadFile.deleteDrectory(f);
-
-                } else {
-                    JOptionPane.showMessageDialog(this, "Please specify another directory", "Message",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
+                ReadFile.deleteDrectory(f);
             }
             f.mkdir();
 
@@ -1083,7 +1070,7 @@ public class TaskManagerTabPanel extends JPanel {
                 }
                 if (count == this.taskList.size()) {
                     TaskManagerTabPanel.this.summary.readData(resultsPath);
-                // TaskManagerTabPanel.this.plot.readData(resultsPath);
+                    // TaskManagerTabPanel.this.plot.readData(resultsPath);
                     //  TaskManagerTabPanel.this.analizeTab.readData(resultsPath);
                     System.out.println();
                     System.out.println("To perform summaries type summary or exit to finish");
