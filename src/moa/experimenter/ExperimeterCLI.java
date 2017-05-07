@@ -102,7 +102,7 @@ public class ExperimeterCLI {
         return true;
     }
 
-    public void proccesCMD() {
+    public boolean proccesCMD() {
         int threads = 1;
         String algNames = null;
         String algShortNames = null;
@@ -120,7 +120,7 @@ public class ExperimeterCLI {
             cmdLine = parser.parse(options, args);
             if (cmdLine.hasOption("h")) {
                 new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);
-                return;
+                return false;
             }
 
             if (cmdLine.hasOption("th")) {
@@ -215,11 +215,13 @@ public class ExperimeterCLI {
 
         } catch (org.apache.commons.cli.ParseException ex) {
             System.out.println(ex.getMessage());
-
-            new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);    // Error, imprimimos la ayuda  
+            new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);    // Error, imprimimos la ayuda
+            return false;
         } catch (java.lang.NumberFormatException ex) {
-            new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);    // Error, imprimimos la ayuda  
+            new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);    // Error, imprimimos la ayuda 
+            return false;
         }
+        return true;
     }
 
     public String[] getAlgorithms() {
