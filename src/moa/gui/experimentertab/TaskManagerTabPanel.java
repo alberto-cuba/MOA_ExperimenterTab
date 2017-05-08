@@ -1103,7 +1103,7 @@ public class TaskManagerTabPanel extends JPanel {
                                 }
                                 break;
                         }
-                        System.out.println("Type one option to perform summaries: <summary> <plot> <Analyze> or <exit> to finish");
+                        System.out.println("To perform summaries type summary or exit to finish");
                         option = sc.nextLine();
                     }
 //                       String arg = sc.nextLine();
