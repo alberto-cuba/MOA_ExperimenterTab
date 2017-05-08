@@ -68,6 +68,8 @@ import moa.learners.Learner;
 import moa.streams.InstanceStream;
 import moa.streams.generators.cd.ConceptDriftGenerator;
 import moa.streams.generators.cd.GradualChangeGenerator;
+import nz.ac.waikato.cms.gui.core.BaseDirectoryChooser;
+import nz.ac.waikato.cms.gui.core.BaseFileChooser;
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -550,37 +552,30 @@ public class TaskManagerTabPanel extends JPanel {
 
     private void jButtonSaveConfigActionPerformed(java.awt.event.ActionEvent evt) {
         String path = "";
-        JFileChooser propDir = new JFileChooser();
+        BaseFileChooser propDir = new BaseFileChooser();
         int selection = propDir.showSaveDialog(this);
         if (selection == JFileChooser.APPROVE_OPTION) {
             path = propDir.getSelectedFile().getAbsolutePath();
             SaveConfig(path);
         }
-//        if (!this.jTextFieldDir.getText().equals("")) {
-//            path = this.jTextFieldDir.getText() + File.separator + "experiment.properties";
-//            SaveConfig(path);
-//            
-//        } else{
-//            JOptionPane.showMessageDialog(this, "The result directory is not specified",
-//                    "Error", JOptionPane.ERROR_MESSAGE);
-//        }
+
 
     }
 
     private void jButtonOpenConfigActionPerformed(java.awt.event.ActionEvent evt) {
-        String path = openDirectory(true);
-
-        if (!path.equals("")) {
-            openConfig(path);
-        }
+        String path = "";
+        
+        BaseFileChooser fileChooser = new BaseFileChooser();
+        int option = fileChooser.showOpenDialog(null);
+                if (option == JFileChooser.APPROVE_OPTION) { 
+                    path = fileChooser.getSelectedFile().getAbsolutePath();
+                     openConfig(path);
+                }
     }
 
-    private String openDirectory(boolean flag) {
+    private String openDirectory() {
         String path = "";
-        JFileChooser propDir = new JFileChooser();
-        if (!flag) {
-            propDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        }
+        BaseDirectoryChooser propDir = new BaseDirectoryChooser();
         int selection = propDir.showOpenDialog(this);
         if (selection == JFileChooser.APPROVE_OPTION) {
             path = propDir.getSelectedFile().getAbsolutePath();
@@ -599,7 +594,7 @@ public class TaskManagerTabPanel extends JPanel {
 
     private void jButtonDirActionPerformed(ActionEvent evt) {
 
-        String path = openDirectory(false);
+        String path = openDirectory();
 
         if (!path.equals("")) {
             this.jTextFieldDir.setText(path);

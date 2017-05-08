@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import nz.ac.waikato.cms.gui.core.BaseDirectoryChooser;
 
 /**
  * Class to display summaries in the gui.
@@ -113,7 +114,7 @@ public class SummaryViewer extends JFrame {
      private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {
         
            String path = "";
-                JFileChooser propDir = new JFileChooser();
+                BaseDirectoryChooser propDir = new BaseDirectoryChooser();
                 propDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 propDir.setCurrentDirectory(new File(resultsPath));
                 int selection = propDir.showSaveDialog(this);

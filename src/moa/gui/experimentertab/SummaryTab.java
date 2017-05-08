@@ -37,6 +37,7 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import nz.ac.waikato.cms.gui.core.BaseDirectoryChooser;
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -411,7 +412,7 @@ public class SummaryTab extends JPanel {
     }
 
     private void jButtonResultsActionPerformed(java.awt.event.ActionEvent evt) {
-        JFileChooser resultsDir = new JFileChooser();
+        BaseDirectoryChooser resultsDir = new BaseDirectoryChooser();
         resultsDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int selection = -1;
         String path = "";
