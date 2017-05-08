@@ -36,7 +36,7 @@ public class ExperimenterTabPanel extends AbstractTabPanel {
         tabs.addTab("Experiments", this.taskTabManagerPanel);
         tabs.addTab("Summary", this.taskTabManagerPanel.summary);
         tabs.addTab("Plot", this.taskTabManagerPanel.plot);
-        tabs.addTab("Analize", this.taskTabManagerPanel.analizeTab);
+        tabs.addTab("Analyze", this.taskTabManagerPanel.analizeTab);
                  //this.previewPanel = new PreviewPanel();
         //this.taskManagerPanel.setPreviewPanel(this.previewPanel);
         setLayout(new BorderLayout());
