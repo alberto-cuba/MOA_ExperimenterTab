@@ -593,6 +593,7 @@ public class TaskManagerTabPanel extends JPanel {
         this.jTextFieldTask.setText("");
         this.jTextFieldDir.setText("");
         this.jTextFieldProcess.setText("1");
+        this.jButtonRun.setEnabled(true);
         cleanTables();
     }
 
@@ -908,7 +909,7 @@ public class TaskManagerTabPanel extends JPanel {
                 taskCount++;
             }
         }
-
+        this.jButtonRun.setEnabled(false);
         Buffer buffer = new Buffer(tasks);
         int proc = 1;
         if (!this.jTextFieldProcess.getText().equals("")) {
@@ -939,6 +940,7 @@ public class TaskManagerTabPanel extends JPanel {
                         TaskManagerTabPanel.this.summary.readData(resultsPath);
                         TaskManagerTabPanel.this.plot.readData(resultsPath);
                         TaskManagerTabPanel.this.analizeTab.readData(resultsPath);
+                        TaskManagerTabPanel.this.jButtonRun.setEnabled(true);
                         break;
                     }
                 }
