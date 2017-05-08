@@ -38,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import static moa.gui.experimentertab.ReadFile.readCSV;
+import nz.ac.waikato.cms.gui.core.BaseDirectoryChooser;
 import org.apache.commons.io.FilenameUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -981,15 +982,11 @@ public class PlotTab extends javax.swing.JPanel {
     }
 
     private String getDirectory(String type, int filter) {
-        JFileChooser gnuPlotDir = new JFileChooser();
+        BaseDirectoryChooser gnuPlotDir = new BaseDirectoryChooser();
         gnuPlotDir.setFileSelectionMode(filter);
         int selection = -1;
-        if (type.equals("open")) {
+        if (type.equals("open")) 
             selection = gnuPlotDir.showOpenDialog(this);
-        } else if (type.equals("save")) {
-            selection = gnuPlotDir.showSaveDialog(this);
-        }
-
         if (selection == JFileChooser.APPROVE_OPTION) {
 
             try {

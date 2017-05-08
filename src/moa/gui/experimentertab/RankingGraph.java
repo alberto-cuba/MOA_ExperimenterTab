@@ -64,6 +64,7 @@ import javax.swing.event.ChangeEvent;
 import moa.gui.experimentertab.statisticaltests.PValuePerTwoAlgorithm;
 import moa.gui.experimentertab.statisticaltests.RankPerAlgorithm;
 import nz.ac.waikato.cms.gui.core.BaseDirectoryChooser;
+import nz.ac.waikato.cms.gui.core.BaseFileChooser;
 import org.jfree.ui.FontChooserPanel;
 import org.jfree.ui.StrokeChooserPanel;
 import org.jfree.ui.StrokeSample;
@@ -285,8 +286,8 @@ public class RankingGraph extends JFrame {
 //                    JtextFieldimgName.setText(path);
 //                    
 //                }
-               // JFileChooser fileChooser = new JFileChooser();
-                BaseDirectoryChooser fileChooser = new BaseDirectoryChooser();
+              
+                BaseFileChooser fileChooser = new BaseFileChooser();
                 ExtensionFileFilter filterPNG = new ExtensionFileFilter(".png","PNG Image Files");
                 fileChooser.addChoosableFileFilter(filterPNG);
 

@@ -121,7 +121,7 @@ public class TaskManagerTabPanel extends JPanel {
 
     public PlotTab plot = new PlotTab();
 
-    public AnalizeTab analizeTab = new AnalizeTab();
+    public AnalyzeTab analizeTab = new AnalyzeTab();
 
     protected String resultsPath = "";
     private javax.swing.JButton jButtonTask;

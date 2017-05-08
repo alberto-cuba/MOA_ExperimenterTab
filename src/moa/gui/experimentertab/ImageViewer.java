@@ -30,6 +30,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import nz.ac.waikato.cms.gui.core.BaseDirectoryChooser;
+import nz.ac.waikato.cms.gui.core.BaseFileChooser;
 
 /**
  * This class creates a window where images generated with JFreeChart are
@@ -89,7 +91,7 @@ public class ImageViewer extends JFrame {
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {
 
         String path = "";
-        JFileChooser propDir = new JFileChooser();
+        BaseDirectoryChooser propDir = new BaseDirectoryChooser();
         propDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         propDir.setCurrentDirectory(new File(resultsPath));
         int selection = propDir.showSaveDialog(this);

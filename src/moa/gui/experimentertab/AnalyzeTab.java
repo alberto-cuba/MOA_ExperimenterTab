@@ -1,5 +1,5 @@
 /*
- *    AnalizeTab.java
+ *    AnalyzeTab.java
  *    Copyright (C) 2007 University of Waikato, Hamilton, New Zealand 
  *    @author Alberto Verdecia Cabrera (averdeciac@gmail.com)
  *
@@ -38,6 +38,7 @@ import javax.swing.table.DefaultTableModel;
 import moa.gui.experimentertab.statisticaltests.PValuePerTwoAlgorithm;
 import moa.gui.experimentertab.statisticaltests.RankPerAlgorithm;
 import moa.gui.experimentertab.statisticaltests.StatisticalTest;
+import nz.ac.waikato.cms.gui.core.BaseDirectoryChooser;
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -46,7 +47,7 @@ import org.apache.commons.io.FilenameUtils;
  *
  * @author Alberto Verdecia Cabrera (averdeciac@gmail.com)
  */
-public class AnalizeTab extends javax.swing.JPanel {
+public class AnalyzeTab extends javax.swing.JPanel {
 
     private String algorithms[];
     ArrayList<RankPerAlgorithm> rank = null;
@@ -59,7 +60,7 @@ public class AnalizeTab extends javax.swing.JPanel {
     /**
      * Creates new form Analize
      */
-    public AnalizeTab() {
+    public AnalyzeTab() {
         initComponents();
         this.algoritmModel = (DefaultTableModel) jTableAlgoritms.getModel();
         this.streamModel = (DefaultTableModel) jTableStreams.getModel();
@@ -73,7 +74,7 @@ public class AnalizeTab extends javax.swing.JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create and set up the content pane.
-        JPanel panel = new AnalizeTab();
+        JPanel panel = new AnalyzeTab();
         panel.setOpaque(true); // content panes must be opaque
         frame.setContentPane(panel);
 
@@ -337,7 +338,7 @@ public class AnalizeTab extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResultsActionPerformed
-        JFileChooser resultsFile = new JFileChooser();
+        BaseDirectoryChooser resultsFile = new BaseDirectoryChooser();
         resultsFile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int selection = resultsFile.showOpenDialog(this);
         if (selection == JFileChooser.APPROVE_OPTION) {
