@@ -1176,6 +1176,7 @@ public class TaskManagerTabPanel extends JPanel {
         Properties prop = new Properties();
         String algShortNames = "", algCommand = "";
         String streamShortNames = "", streamCommand = "";
+        String expCLI = "";
         if (jTableAlgorithms.getRowCount() != 0) {
             algCommand += jTableAlgorithms.getModel().getValueAt(0, 0);
             algShortNames += jTableAlgorithms.getModel().getValueAt(0, 1);
@@ -1192,6 +1193,15 @@ public class TaskManagerTabPanel extends JPanel {
             streamCommand += "," + jTableStreams.getModel().getValueAt(j, 0);
             streamShortNames += "," + jTableStreams.getModel().getValueAt(j, 1);
         }
+        expCLI += "-ts \""+jTextFieldTask.getText()+"\" ";
+        expCLI += "-ls \""+algCommand+"\" ";
+        expCLI += "-lss \""+streamShortNames+"\" ";
+        expCLI += "-ds \""+streamCommand+"\" ";
+        expCLI += "-dss \""+streamShortNames+"\" ";
+        expCLI += "-th "+jTextFieldProcess.getText()+" ";
+        expCLI += "-rf \""+FilenameUtils.separatorsToSystem(this.resultsPath)+"\" ";
+        prop.setProperty("expCLI", expCLI);
+       
         prop.setProperty("task", jTextFieldTask.getText());
 
         prop.setProperty("processors", jTextFieldProcess.getText());

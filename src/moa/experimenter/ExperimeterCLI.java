@@ -5,11 +5,13 @@
  */
 package moa.experimenter;
 
+import java.io.File;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -207,7 +209,12 @@ public class ExperimeterCLI {
             if (resultsFolder == null) {
                 throw new org.apache.commons.cli.ParseException("The resuts folder are required");
             }
-            this.setResultsFolder(resultsFolder);
+            String dir = resultsFolder.split(":")[0];
+            if(dir.contains(File.separator)){
+                dir = dir.split(File.separator+File.separator)[0];
+                resultsFolder = dir+":"+resultsFolder.split(":")[1];
+            }
+            this.setResultsFolder(FilenameUtils.separatorsToSystem(resultsFolder));
             // System.out.println("OK");  
             // System.out.println(task);
             // System.out.println(algNames);
