@@ -60,8 +60,9 @@ import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import static moa.DoTask.MAX_STATUS_STRING_LENGTH;
-import static moa.DoTask.progressAnimSequence;
+import javax.swing.JSplitPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import moa.core.Globals;
 import moa.learners.ChangeDetectorLearner;
 import moa.learners.Learner;
@@ -92,7 +93,7 @@ public class TaskManagerTabPanel extends JPanel {
 
     protected DefaultTableModel streamModel;
 
-    protected List<TaskThread> taskList = new ArrayList<>();
+    protected List<ExpTaskThread> taskList = new ArrayList<>();
 
     protected TaskManagerTabPanel.TaskTableModel taskTableModel;
 
@@ -103,6 +104,10 @@ public class TaskManagerTabPanel extends JPanel {
     protected ChangeDetectorLearner detector = new ChangeDetectorLearner();
 
     protected ConceptDriftGenerator detectorStream = new GradualChangeGenerator();
+    
+    protected ExpPreviewPanel previewPanel  = new ExpPreviewPanel();
+    
+    private PreviewExperimets preview = new PreviewExperimets(previewPanel);
 
     DefaultListModel listModelMonitor = new DefaultListModel();
 
@@ -124,7 +129,7 @@ public class TaskManagerTabPanel extends JPanel {
     public PlotTab plot = new PlotTab();
 
     public AnalyzeTab analizeTab = new AnalyzeTab();
-
+    
     protected String resultsPath = "";
     private javax.swing.JButton jButtonTask;
     private javax.swing.JButton jButtonAlgorithm;
@@ -140,6 +145,7 @@ public class TaskManagerTabPanel extends JPanel {
     private javax.swing.JButton jButtonOpenConfig;
     private javax.swing.JButton jButtonReset;
     private javax.swing.JButton jButtonDir;
+    private javax.swing.JButton jButtonPreview;
     private javax.swing.JPanel jPanelConfig;
     private javax.swing.JScrollPane jScrollPaneAlgorithms;
     private javax.swing.JScrollPane jScrollPaneStreams;
@@ -241,7 +247,7 @@ public class TaskManagerTabPanel extends JPanel {
 
         @Override
         public Object getValueAt(int row, int col) {
-            TaskThread thread = TaskManagerTabPanel.this.taskList.get(row);
+            ExpTaskThread thread = TaskManagerTabPanel.this.taskList.get(row);
             switch (col) {
                 case 0:
                     try {
@@ -271,7 +277,6 @@ public class TaskManagerTabPanel extends JPanel {
      */
     public TaskManagerTabPanel() {
         initComponents();
-
         this.algoritmModel = (DefaultTableModel) jTableAlgorithms.getModel();
         this.streamModel = (DefaultTableModel) jTableStreams.getModel();
         this.taskTableModel = new TaskManagerTabPanel.TaskTableModel();
@@ -283,7 +288,14 @@ public class TaskManagerTabPanel extends JPanel {
         this.taskTable.getColumnModel().getColumn(2).setCellRenderer(
                 centerRenderer);
         this.taskTable.getColumnModel().getColumn(4).setCellRenderer(new TaskManagerTabPanel.ProgressCellRenderer());
+           this.taskTable.getSelectionModel().addListSelectionListener(
+                new ListSelectionListener() {
 
+                    @Override
+                    public void valueChanged(ListSelectionEvent arg0) {
+                        taskSelectionChanged();
+                    }
+                });
         javax.swing.Timer updateListTimer = new javax.swing.Timer(
                 MILLISECS_BETWEEN_REFRESH, (ActionEvent e) -> {
                     TaskManagerTabPanel.this.taskTable.repaint();
@@ -334,6 +346,7 @@ public class TaskManagerTabPanel extends JPanel {
         jButtonOpenConfig = new javax.swing.JButton();
         jButtonReset = new javax.swing.JButton();
         jButtonDir = new javax.swing.JButton();
+        jButtonPreview = new javax.swing.JButton();
 
         jPanelConfig.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
                 "Configure", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
@@ -368,6 +381,9 @@ public class TaskManagerTabPanel extends JPanel {
         jButtonTask.addActionListener(this::jButtonTaskActionPerformed);
         jButtonDir.setText("Browse");
         jButtonDir.addActionListener(this::jButtonDirActionPerformed);
+        
+        jButtonPreview.setText("Preview");
+        jButtonPreview.addActionListener(this::jButtonPreviewActionPerformed);
 
         jButtonAlgorithm.setText("Add Algorithm");
         jButtonAlgorithm.addActionListener(this::jButtonAlgorithmActionPerformed);
@@ -530,10 +546,11 @@ public class TaskManagerTabPanel extends JPanel {
         panelSRB.add(jButtonRun);
         //Configure task table panel
         jScrollPaneAlgorithms.setPreferredSize(new Dimension(461, 260));
-        jScrollPaneStreams.setPreferredSize(new Dimension(461, 260));
-        jScrollPaneTaskTable.setPreferredSize(new Dimension(350, 180));
+       jScrollPaneStreams.setPreferredSize(new Dimension(461, 260));
+       jScrollPaneTaskTable.setPreferredSize(new Dimension(350, 180));
         JPanel panelTaskTable = new JPanel();
         JPanel panelTaskTableBtn = new JPanel();
+        panelTaskTableBtn.add(jButtonPreview);
         panelTaskTableBtn.add(jButtonPause);
         panelTaskTableBtn.add(jButtonResume);
         panelTaskTableBtn.add(jButtonCancel);
@@ -543,10 +560,21 @@ public class TaskManagerTabPanel extends JPanel {
         panelTaskTable.add(panelSRB, BorderLayout.NORTH);
         panelTaskTable.add(jScrollPaneTaskTable, BorderLayout.CENTER);
         panelTaskTable.add(panelTaskTableBtn, BorderLayout.SOUTH);
-
         setLayout(new BorderLayout());
         this.add(jPanel1, BorderLayout.CENTER);
         this.add(panelTaskTable, BorderLayout.SOUTH);
+
+//        JPanel panel = new JPanel(new BorderLayout());
+//        panel.add(panelTaskTable,BorderLayout.NORTH);
+//        panel.add(this.previewPanel,BorderLayout.CENTER);
+//        setLayout(new BorderLayout());
+//       JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+//       splitPane.setTopComponent(jPanel1);
+//       splitPane.setBottomComponent(panel);
+//        splitPane.setDividerLocation(100);
+//       // this.add(splitPane, BorderLayout.CENTER);
+//       splitPane.setPreferredSize(new Dimension(500, 700));
+//        this.add(splitPane, BorderLayout.SOUTH);
 
     }// </editor-fold>   
 
@@ -604,7 +632,10 @@ public class TaskManagerTabPanel extends JPanel {
 
         }
     }
+   private void jButtonPreviewActionPerformed(ActionEvent evt) {
 
+         preview.setVisible(true);
+    }
     private void jButtonTaskActionPerformed(java.awt.event.ActionEvent evt) {
 
         String initial = TaskManagerTabPanel.this.currentTask.getCLICreationString(MainTask.class);
@@ -914,7 +945,7 @@ public class TaskManagerTabPanel extends JPanel {
             proc = tasks.length;
         }
         for (int i = 0; i < proc; i++) {
-            TaskThread thread = new TaskThread(buffer);
+            ExpTaskThread thread = new ExpTaskThread(buffer);
             thread.start();
             this.taskList.add(0, thread);
             this.taskTableModel.fireTableDataChanged();
@@ -925,7 +956,7 @@ public class TaskManagerTabPanel extends JPanel {
             public void run() {
                 while (true) {
                     int count = 0;
-                    for (TaskThread thread : TaskManagerTabPanel.this.taskList) {
+                    for (ExpTaskThread thread : TaskManagerTabPanel.this.taskList) {
                         if (thread.isCompleted == true) {
                             count++;
                             //System.out.println(count);
@@ -1020,7 +1051,7 @@ public class TaskManagerTabPanel extends JPanel {
                 proc = tasks.length;
             }
             for (int i = 0; i < proc; i++) {
-                TaskThread thread = new TaskThread(buffer);
+                ExpTaskThread thread = new ExpTaskThread(buffer);
                 thread.start();
                 this.taskList.add(0, thread);
                 this.taskTableModel.fireTableDataChanged();
@@ -1035,7 +1066,7 @@ public class TaskManagerTabPanel extends JPanel {
                 StringBuilder progressLine = new StringBuilder();
                 progressLine.append('\r');
 
-                for (TaskThread thread : this.taskList) {
+                for (ExpTaskThread thread : this.taskList) {
                     //System.out.println(thread.getCurrentActivityFracComplete()*100);
 
                     if (thread.isCompleted == true) {
@@ -1118,9 +1149,20 @@ public class TaskManagerTabPanel extends JPanel {
      *
      * @return a task thread
      */
-    public TaskThread[] getSelectedTasks() {
+    
+     public void taskSelectionChanged() {
+        ExpTaskThread[] selectedTasks = getSelectedTasks();
+        if (selectedTasks.length == 1) {
+           if (this.previewPanel != null) {
+                this.previewPanel.setTaskThreadToPreview(selectedTasks[0]);
+            }
+        } else {
+            this.previewPanel.setTaskThreadToPreview(null);
+        }
+    }
+    public ExpTaskThread[] getSelectedTasks() {
         int[] selectedRows = this.taskTable.getSelectedRows();
-        TaskThread[] selectedTasks = new TaskThread[selectedRows.length];
+        ExpTaskThread[] selectedTasks = new ExpTaskThread[selectedRows.length];
         for (int i = 0; i < selectedRows.length; i++) {
             selectedTasks[i] = this.taskList.get(selectedRows[i]);
         }
@@ -1131,8 +1173,8 @@ public class TaskManagerTabPanel extends JPanel {
      * Pause tasks
      */
     public void pauseSelectedTasks() {
-        TaskThread[] selectedTasks = getSelectedTasks();
-        for (TaskThread thread : selectedTasks) {
+        ExpTaskThread[] selectedTasks = getSelectedTasks();
+        for (ExpTaskThread thread : selectedTasks) {
             thread.pauseTask();
         }
     }
@@ -1141,8 +1183,8 @@ public class TaskManagerTabPanel extends JPanel {
      * Reseme task
      */
     public void resumeSelectedTasks() {
-        TaskThread[] selectedTasks = getSelectedTasks();
-        for (TaskThread thread : selectedTasks) {
+        ExpTaskThread[] selectedTasks = getSelectedTasks();
+        for (ExpTaskThread thread : selectedTasks) {
             thread.resumeTask();
         }
     }
@@ -1151,8 +1193,8 @@ public class TaskManagerTabPanel extends JPanel {
      * Cancel task
      */
     public void cancelSelectedTasks() {
-        TaskThread[] selectedTasks = getSelectedTasks();
-        for (TaskThread thread : selectedTasks) {
+        ExpTaskThread[] selectedTasks = getSelectedTasks();
+        for (ExpTaskThread thread : selectedTasks) {
             thread.cancelTask();
         }
     }
@@ -1161,8 +1203,8 @@ public class TaskManagerTabPanel extends JPanel {
      * Deletes selected tasks
      */
     public void deleteSelectedTasks() {
-        TaskThread[] selectedTasks = getSelectedTasks();
-        for (TaskThread thread : selectedTasks) {
+        ExpTaskThread[] selectedTasks = getSelectedTasks();
+        for (ExpTaskThread thread : selectedTasks) {
             thread.cancelTask();
             this.taskList.remove(thread);
         }

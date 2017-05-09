@@ -1,5 +1,5 @@
 /*
- *    TaskThread.java
+ *    ExpTaskThread.java
  *    Copyright (C) 2007 University of Waikato, Hamilton, New Zealand
  *    @author Richard Kirkby (rkirkby@cs.waikato.ac.nz)
  *    @modified Alberto Verdecia (averdeciac@gmail.com)
@@ -28,6 +28,7 @@ import moa.tasks.StandardTaskMonitor;
 import moa.tasks.Task;
 import moa.tasks.TaskCompletionListener;
 import moa.tasks.TaskMonitor;
+import moa.tasks.TaskThread;
 
 /**
  * Task Thread.
@@ -35,7 +36,7 @@ import moa.tasks.TaskMonitor;
  * @author Richard Kirkby (rkirkby@cs.waikato.ac.nz)
  * @modified Alberto Verdecia (averdeciac@gmail.com)  
  */
-public class TaskThread extends Thread {
+public class ExpTaskThread extends Thread {
 
     Buffer tasks;
 
@@ -64,9 +65,9 @@ public class TaskThread extends Thread {
 
     CopyOnWriteArraySet<TaskCompletionListener> completionListeners = new CopyOnWriteArraySet<TaskCompletionListener>();
 
-    public TaskThread(Buffer buf) {
+    public ExpTaskThread(Buffer buf) {
         this.tasks = buf;
-        this.currentStatus = TaskThread.Status.NOT_STARTED;
+        this.currentStatus = ExpTaskThread.Status.NOT_STARTED;
         this.taskMonitor = new StandardTaskMonitor();
         this.repository =null;
        
@@ -78,27 +79,27 @@ public class TaskThread extends Thread {
         this.taskStartTime = TimingUtils.getNanoCPUTimeOfThread(getId());
         while (this.tasks.getCantTask() != this.tasks.getSize()) {
             this.runningTask = this.tasks.getTask();
-            this.currentStatus = TaskThread.Status.RUNNING;
+            this.currentStatus = ExpTaskThread.Status.RUNNING;
             this.taskMonitor.setCurrentActivityDescription("Running task " + this.runningTask);
             this.finalResult = this.runningTask.doTask(this.taskMonitor, this.repository);
-            this.currentStatus = this.taskMonitor.isCancelled() ? TaskThread.Status.CANCELLED
-                    : TaskThread.Status.COMPLETED;
+            this.currentStatus = this.taskMonitor.isCancelled() ? ExpTaskThread.Status.CANCELLED
+                    : ExpTaskThread.Status.COMPLETED;
             //System.out.println(this.taskMonitor.getCurrentActivityFractionComplete()*100); 
         }
         this.isCompleted = true;
     }
    public String getCurrentActivityString() {
-        return (isComplete() || (this.currentStatus == TaskThread.Status.NOT_STARTED)) ? ""
+        return (isComplete() || (this.currentStatus == ExpTaskThread.Status.NOT_STARTED)) ? ""
                 : this.taskMonitor.getCurrentActivityDescription();
     }
        
     public boolean isComplete() {
-        return ((this.currentStatus == TaskThread.Status.CANCELLED)
-                || (this.currentStatus == TaskThread.Status.COMPLETED) || (this.currentStatus == TaskThread.Status.FAILED));
+        return ((this.currentStatus == ExpTaskThread.Status.CANCELLED)
+                || (this.currentStatus == ExpTaskThread.Status.COMPLETED) || (this.currentStatus == ExpTaskThread.Status.FAILED));
     }
     public double getCPUSecondsElapsed() {
         double secondsElapsed = 0.0;
-        if (this.currentStatus == TaskThread.Status.NOT_STARTED) {
+        if (this.currentStatus == ExpTaskThread.Status.NOT_STARTED) {
             secondsElapsed = 0.0;
         } else if (isComplete()) {
             secondsElapsed = TimingUtils.nanoTimeToSeconds(this.taskEndTime

@@ -8,7 +8,6 @@ package moa.gui.experimentertab;
 import java.awt.BorderLayout;
 import javax.swing.JTabbedPane;
 import moa.gui.AbstractTabPanel;
-import moa.gui.PreviewPanel;
 import moa.gui.TaskManagerPanel;
 
 /**
@@ -19,11 +18,9 @@ public class ExperimenterTabPanel extends AbstractTabPanel {
 
     private static final long serialVersionUID = 1L;
     
-    protected TaskManagerPanel taskManagerPanel;
-
     protected TaskManagerTabPanel taskTabManagerPanel;
 
-    protected PreviewPanel previewPanel;
+    protected ExpPreviewPanel previewPanel;
 
     protected JTabbedPane tabs = new JTabbedPane();
 
@@ -37,8 +34,10 @@ public class ExperimenterTabPanel extends AbstractTabPanel {
         tabs.addTab("Summary", this.taskTabManagerPanel.summary);
         tabs.addTab("Plot", this.taskTabManagerPanel.plot);
         tabs.addTab("Analyze", this.taskTabManagerPanel.analizeTab);
-                 //this.previewPanel = new PreviewPanel();
+        this.previewPanel = new ExpPreviewPanel();
+        //this.taskTabManagerPanel.setPreviewPanel(this.previewPanel);
         //this.taskManagerPanel.setPreviewPanel(this.previewPanel);
+       // tabs.addTab("Analyze", this.previewPanel);
         setLayout(new BorderLayout());
         add(this.tabs);
         //add(this.previewPanel, BorderLayout.CENTER);
