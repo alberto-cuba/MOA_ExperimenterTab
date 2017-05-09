@@ -57,7 +57,7 @@ public class ImageViewer extends JFrame {
      * @throws HeadlessException
      */
     public ImageViewer(ImageTreePanel imgPanel, String resultsPath) throws HeadlessException {
-        super("Image Viewer");
+        super("Preview");
         this.imgPanel = imgPanel;
         this.resultsPath = resultsPath;
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
