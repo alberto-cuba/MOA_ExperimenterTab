@@ -1234,7 +1234,7 @@ public class TaskManagerTabPanel extends JPanel {
         }
         expCLI += "-ts \""+jTextFieldTask.getText()+"\" ";
         expCLI += "-ls \""+algCommand+"\" ";
-        expCLI += "-lss \""+streamShortNames+"\" ";
+        expCLI += "-lss \""+algShortNames+"\" ";
         expCLI += "-ds \""+streamCommand+"\" ";
         expCLI += "-dss \""+streamShortNames+"\" ";
         expCLI += "-th "+jTextFieldProcess.getText()+" ";
