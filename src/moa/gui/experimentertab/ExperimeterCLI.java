@@ -180,6 +180,18 @@ public class ExperimeterCLI {
             
             if (streamNames.contains(",")) {
                 this.setStreams(streamNames.split(","));
+                for (int i = 0; i < this.getStreams().length; i++) {
+                    String ds = this.getStreams()[i];
+                    if (ds.contains(":")) {
+                        String dir = ds.split(":")[0];
+                        if (dir.contains(File.separator)) {
+                            dir = dir.split(File.separator + File.separator)[0];
+                            ds = dir + ":" + ds.split(":")[1];
+                            this.setStreamIndex(i, ds);
+                        }
+                        
+                    }
+                }
             } else {
                 String str[] = new String[1];
                 str[0] = streamNames;
@@ -294,7 +306,9 @@ public class ExperimeterCLI {
     public void setStreamsID(String[] streamsID) {
         this.streamsID = streamsID;
     }
-    
+     public void setStreamIndex(int index, String streamID) {
+        this.streams[index] = streamID;
+    }
     public void setTask(String task) {
         this.task = task;
     }
