@@ -339,7 +339,7 @@ public class AnalyzeTab extends javax.swing.JPanel {
 
     private void jButtonResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResultsActionPerformed
         BaseDirectoryChooser resultsFile = new BaseDirectoryChooser();
-        resultsFile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        //resultsFile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int selection = resultsFile.showOpenDialog(this);
         if (selection == JFileChooser.APPROVE_OPTION) {
             path = resultsFile.getSelectedFile().getAbsolutePath();
@@ -467,7 +467,7 @@ public class AnalyzeTab extends javax.swing.JPanel {
         test.avgPerformance();
         this.jTextAreaOut.append("P-values involving all algorithms\n");
         this.jTextAreaOut.append(System.getProperty("line.separator"));
-        this.jTextAreaOut.append("P-value computed by Friedman Tes: " + test.getFriedmanPValue() + "\n");
+        this.jTextAreaOut.append("P-value computed by Friedman Test: " + test.getFriedmanPValue() + "\n");
         this.jTextAreaOut.append("P-value computed by Iman and Daveport Test: " + test.getImanPValue() + "\n");
 
         rank = test.getRankAlg();
