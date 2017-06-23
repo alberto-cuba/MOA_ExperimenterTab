@@ -480,7 +480,7 @@ public class RankingGraph extends JFrame {
             //double ddiv = (double)((xfin - xin)/4); 
             // int algdivs = (int) (Math.ceil(algRank.get(algRank.size() - 1).rank)-Math.round(algRank.get(0).rank));
             int rank1 = (int)Math.floor(algRank.get(0).rank);
-            
+            //ticks number
             int ticks = (int) (Math.ceil(algRank.get(algRank.size() - 1).rank));
             int xdiv = (xfin - xin) / ticks; //number of divisions in the axis
             int xinr = rank1*xdiv + xin;
@@ -490,6 +490,7 @@ public class RankingGraph extends JFrame {
 //            g.draw(new Line2D.Double(xleft - xScale, yg, xrigth + xScale, yg));
 //            g1.draw(new Line2D.Double(xleft - xScale, yg, xrigth + xScale, yg));
 //            gb.draw(new Line2D.Double(xleft - xScale, yg, xrigth + xScale, yg));
+             //axis
               g.draw(new Line2D.Double(xinr, yg, xrigth + xScale, yg));
               g1.draw(new Line2D.Double(xinr, yg, xrigth + xScale, yg));
               gb.draw(new Line2D.Double(xinr, yg, xrigth + xScale, yg));
