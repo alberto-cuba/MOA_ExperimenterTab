@@ -454,6 +454,7 @@ public class AnalyzeTab extends javax.swing.JPanel {
             streams.add(s);
         }
 
+        //Statistical Test 
         StatisticalTest test = new StatisticalTest(streams);
         try {
             // test.readCSV(this.jTextFieldCSV.getText());
