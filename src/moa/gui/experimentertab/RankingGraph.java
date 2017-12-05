@@ -477,27 +477,16 @@ public class RankingGraph extends JFrame {
             //Values
             int xin = xleft - xScale;
             int xfin = xrigth + xScale;
-            //double ddiv = (double)((xfin - xin)/4); 
-            // int algdivs = (int) (Math.ceil(algRank.get(algRank.size() - 1).rank)-Math.round(algRank.get(0).rank));
             int rank1 = (int)Math.floor(algRank.get(0).rank);
             //ticks number
             int ticks = (int) (Math.ceil(algRank.get(algRank.size() - 1).rank));
             int xdiv = (xfin - xin) / ticks; //number of divisions in the axis
             int xinr = rank1*xdiv + xin;
-            // int xdiv1 = (xfin - xin) / algdivs;
-            // int j = (int)Math.round(algRank.get(0).rank);
-            
-//            g.draw(new Line2D.Double(xleft - xScale, yg, xrigth + xScale, yg));
-//            g1.draw(new Line2D.Double(xleft - xScale, yg, xrigth + xScale, yg));
-//            gb.draw(new Line2D.Double(xleft - xScale, yg, xrigth + xScale, yg));
-             //axis
+            //axis
               g.draw(new Line2D.Double(xinr, yg, xrigth + xScale, yg));
               g1.draw(new Line2D.Double(xinr, yg, xrigth + xScale, yg));
               gb.draw(new Line2D.Double(xinr, yg, xrigth + xScale, yg));
 
-            //double val[] = {0.5, 1.51, 1.8, 2.1, 3.4};
-            // marcas en los ejes (ticks)
-            
             int j = rank1;
             //put the ticks
             g.setStroke(currentStroke);
@@ -525,7 +514,7 @@ public class RankingGraph extends JFrame {
                     visited[i][k] = false;
                 }
             }
-            
+           
             //Draw algorithms Lines
             for (int i = 0; i < algRank.size(); i++) {
                 g.draw(new Line2D.Double((double) (xdiv * algRank.get(i).rank + xin), yg + ya, (double) (xdiv * algRank.get(i).rank + xin), yg));
@@ -568,7 +557,7 @@ public class RankingGraph extends JFrame {
                     g1.drawString(algRank.get(i).algName, xinr-3 - lenght - 10, yg + ya);
                     gb.draw(new Line2D.Double((double) (xdiv * algRank.get(i).rank + xin), yg + ya, xinr-3, yg + ya));
                     gb.drawString(algRank.get(i).algName, xinr-3 - lenght - 10, yg + ya);
-                } else {
+                } else {                    
                     g.draw(new Line2D.Double((double) (xdiv * algRank.get(i).rank + xin), yg + ya, xfin+3, yg + ya));
                     g.drawString(algRank.get(i).algName, xfin+3 + 10, yg + ya);
                     g1.draw(new Line2D.Double((double) (xdiv * algRank.get(i).rank + xin), yg + ya, xfin+3, yg + ya));
