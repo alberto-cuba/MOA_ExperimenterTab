@@ -1,6 +1,15 @@
-========================
-BUILD OUTPUT DESCRIPTION
-========================
+# MOA ExperimenterTab
+MOA ExperimenterTab is written in Java. It basically has as inputs learning algorithms and benchmark datasets and outputs the typical artifacts needed to compare online learning algorithms: tables summarizing the experiment results, figures plotting the predictive performance of algorithms over time, and analysis from the application of statistical test to experimental results. The proposed tool follows a wellestablished evaluation methodology for comparing online learning algorithms applied to data
+stream mining.
+
+## Using MOA
+
+* [Getting Started](http://moa.cms.waikato.ac.nz/getting-started/)
+* [Documentation](http://moa.cms.waikato.ac.nz/documentation/)
+* [About MOA](http://moa.cms.waikato.ac.nz/details/)
+
+## Build Description
+
 To run the project it is necessary to have installed Java SE Development Kit 8, 
 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 
@@ -17,9 +26,9 @@ java -jar "moa.2016.04.jar"
 
 To distribute this project, zip up the dist folder (including the lib folder)
 and distribute the ZIP file.
-========================
-RUN DESCRIPTION
-========================
+
+## Run Description
+
 The Experiment tab allows to run several online learning algorithms over multiple datasets
 and save the corresponding experiment results. The experiments can also be performed via
 the command line.
@@ -33,9 +42,9 @@ For example, considering the following commands:
 • rf: results folder.
 • th: number of threads.
 • ts: task
-========================
-RUNNING AN EXAMPLE
-========================
+ 
+ ## Running an Example
+ 
 1. Download the moa-experimenter-jar at https://github.com/alberto-cuba/moa-experimenter-jar
 2. Unzip the folder with the data sets. 
 3. Run the replication script. When the algorithms are finished, the results will be in the Results folder.
