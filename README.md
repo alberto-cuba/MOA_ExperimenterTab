@@ -47,9 +47,10 @@ For example, considering the following commands:
  
 1. Download the moa-experimenter-jar at https://github.com/alberto-cuba/moa-experimenter-jar
 2. Unzip the folder with the data sets. 
-3. Run the replication script. When the algorithms are finished, the results will be in the Results folder.
-3. To visualize and summarize the results it is necessary to run the software via the GUI: type the following in command line, java -jar "moa.2016.04.jar"  
-4. Click on the Experimenter tab. This tab has four tabs (Experiment, Summary,Plot,and Analyze).
+3. Run the replication script. For Unix system excute the command line at the same directory of the moa.2016.04.jar an type
+bash script-l.sh. For Windows system double click on the script-w.bat file. When the algorithms are finished, the results will be in the Results folder.
+4. To visualize and summarize the results it is necessary to run the software via the GUI: type the following in command line, java -jar "moa.2016.04.jar"  
+5. Click on the Experimenter tab. This tab has four tabs (Experiment, Summary,Plot,and Analyze).
 -The Experiment tab allows to run several online learning algorithms over multiple datasets
 and save the corresponding experiment results (not needed for the example since we execute the experiment via the command line).
 -The Summary tab summarizes various performance measurements for different learning algorithms by means of tables in LaTeX and HTML formats. The summaries can be obtained
