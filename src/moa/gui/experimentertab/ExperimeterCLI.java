@@ -6,6 +6,9 @@
 package moa.gui.experimentertab;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -104,7 +107,7 @@ public class ExperimeterCLI {
         return true;
     }
     
-    public boolean proccesCMD() {
+    public boolean proccesCMD(){
         int threads = 1;
         String algNames = null;
         String algShortNames = null;
@@ -217,7 +220,13 @@ public class ExperimeterCLI {
             resultsFolder = cmdLine.getOptionValue("rf");
             
             if (resultsFolder == null) {
-                throw new org.apache.commons.cli.ParseException("The resuts folder are required");
+                //throw new org.apache.commons.cli.ParseException("The resuts folder are required");
+                File excPath = new File(".");
+                try {
+                    resultsFolder = excPath.getCanonicalPath();
+                } catch (IOException ex) {
+                    Logger.getLogger(ExperimeterCLI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             if (resultsFolder.contains(":")) {
                 String dir = resultsFolder.split(":")[0];
@@ -234,10 +243,10 @@ public class ExperimeterCLI {
 
         } catch (org.apache.commons.cli.ParseException ex) {
             System.out.println(ex.getMessage());
-            new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);    // Error, imprimimos la ayuda
+            new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);    // Error, print help
             return false;
         } catch (java.lang.NumberFormatException ex) {
-            new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);    // Error, imprimimos la ayuda 
+            new HelpFormatter().printHelp(ExperimeterCLI.class.getCanonicalName(), options);    // Error, print help 
             return false;
         }
         return true;
